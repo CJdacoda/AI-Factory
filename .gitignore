@@ -3,4 +3,6 @@ cursor/
 .git/
 *.pyc
 __pycache__/
-game_offload/
+game_offload/.env
+game_offload/ 
+.env 
