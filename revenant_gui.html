@@ -4,272 +4,121 @@
     <meta charset="UTF-8">
     <title>ICARUS FACTORY // REVENANT HUD SYSTEM</title>
     <style>
-        body {
-            background-color: #0d1117;
-            color: #c9d1d9;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-        }
-        .dashboard-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .header-panel {
-            background: linear-gradient(135deg, #1f293d 0%, #161b22 100%);
-            border: 1px solid #30363d;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-        h1 {
-            color: #58a6ff;
-            margin: 0 0 10px 0;
-            font-size: 1.8em;
-            letter-spacing: 1px;
-        }
-        .status-badge {
-            display: inline-block;
-            background-color: #da3633;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 0.85em;
-            font-weight: bold;
-            font-family: monospace;
-        }
-        .terminal-viewport {
-            background-color: #090c10;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            padding: 15px;
-            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-            font-size: 0.9em;
-            line-height: 1.5;
-            color: #8b949e;
-            height: 250px;
-            overflow-y: auto;
-            margin-bottom: 20px;
-        }
-        .triage-viewport {
-            background-color: #090c10;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            padding: 15px;
-            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-            font-size: 0.85em;
-            color: #58a6ff;
-            height: 200px;
-            overflow-y: auto;
-            white-space: pre-wrap;
-            margin-bottom: 20px;
-            border-left: 3px solid #58a6ff;
-        }
-        .velvet-prompt-portal {
-            background-color: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-        textarea {
-            width: 100%;
-            height: 80px;
-            background-color: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            color: #c9d1d9;
-            padding: 10px;
-            box-sizing: border-box;
-            font-size: 1em;
-            resize: none;
-            margin-bottom: 15px;
-        }
-        button.portal-btn {
-            background-color: #1f293d;
-            color: #58a6ff;
-            border: 1px solid #30363d;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        button.portal-btn:hover {
-            background-color: #58a6ff;
-            color: #0d1117;
-            border-color: #58a6ff;
-        }
-        #icarus-terminal-gate {
-            background: linear-gradient(135deg, #210c0c 0%, #0d0404 100%);
-            border: 2px solid #f85149;
-            border-radius: 8px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 0 20px rgba(248, 81, 73, 0.25);
-        }
-        .gate-title {
-            color: #f85149;
-            margin: 0 0 15px 0;
-            font-family: monospace;
-            font-size: 1.2em;
-            letter-spacing: 2px;
-        }
-        .action-btn-group {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        .btn-action {
-            padding: 12px 24px;
-            border-radius: 6px;
-            font-weight: bold;
-            font-family: monospace;
-            cursor: pointer;
-            border: none;
-            transition: transform 0.1s ease;
-        }
-        .btn-action:active {
-            transform: scale(0.98);
-        }
-        .btn-danger { background-color: #da3633; color: white; }
-        .btn-success { background-color: #238636; color: white; }
+        body { background-color: #0d1117; color: #c9d1d9; font-family: monospace; margin: 0; padding: 20px; }
+        .dashboard-container { max-width: 1200px; margin: 0 auto; }
+        .header-panel { background: linear-gradient(135deg, #1f293d 0%, #161b22 100%); border: 1px solid #30363d; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+        .status-badge { display: inline-block; background-color: #da3633; color: white; padding: 4px 12px; border-radius: 12px; font-weight: bold; }
+        .triage-viewport { background-color: #090c10; border: 1px solid #30363d; border-radius: 6px; padding: 15px; color: #58a6ff; height: 300px; overflow-y: auto; white-space: pre-wrap; margin-bottom: 20px; font-size: 0.9em; }
+        #icarus-terminal-gate { background: linear-gradient(135deg, #1c1421 0%, #0d0914 100%); border: 2px solid #bc8cff; border-radius: 8px; padding: 25px; margin-bottom: 25px; box-shadow: 0 0 20px rgba(188, 140, 255, 0.2); }
+        .gate-title { color: #bc8cff; font-size: 1.2em; font-weight: bold; letter-spacing: 1px; margin-bottom: 15px; }
+        .action-card { background: #161b22; border: 1px solid #30363d; padding: 10px; margin: 5px 0; border-radius: 4px; color: #8b949e; }
+        .btn-action { padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; border: none; margin-right: 10px; background-color: #21262d; color: #c9d1d9; border: 1px solid #30363d; }
+        .btn-action:hover { background-color: #30363d; color: #58a6ff; }
+        .velvet-prompt-portal { background-color: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; }
+        textarea { width: 100%; height: 80px; background-color: #0d1117; border: 1px solid #30363d; border-radius: 6px; color: #c9d1d9; padding: 10px; box-sizing: border-box; resize: none; margin-bottom: 15px; }
     </style>
 </head>
 <body>
 
 <div class="dashboard-container">
-
     <div class="header-panel">
-        <h1>ICARUS FACTORY OPERATION MATRIX // MAIN COMMAND HUD</h1>
-        <div>SYSTEM STATUS: <span id="system-status-badge" class="status-badge">DISCONNECTED // SERVER STANDBY</span></div>
-        <div style="margin-top: 5px; font-size: 0.85em; color: #8b949e; font-family: monospace;">CORE APPARATUS ENGINE BACKEND PID: <span id="runtime-pid">--</span></div>
-    </div>
-
-    <div style="background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
-        <h3 style="color: #58a6ff; margin-top: 0; font-size: 1.1em; font-family: monospace;">📡 ICARUS LIVE INTELLIGENCE FEED</h3>
-        <div class="triage-viewport" id="triage-feed">Awaiting synchronized data drop packet from Tampermonkey...</div>
+        <h1>ICARUS FACTORY OPERATION MATRIX // COMMAND HUD</h1>
+        <div>SYSTEM STATUS: <span id="system-status-badge" class="status-badge">STANDBY</span></div>
+        <div style="margin-top: 5px; color: #8b949e;">BACKEND CONTROLLER PID: <span id="runtime-pid">--</span></div>
     </div>
 
     <div id="icarus-terminal-gate" style="display: none;">
-        <div class="gate-title">☠️ INTERRUPT SIGNAL // OPERATING SYSTEM OPTIMIZATION PROTOCOL</div>
-        <p style="margin: 5px 0; font-size: 1.15em;">Isolated Directory Weight Target: <span id="hud-folder-name" style="color: #f1e05a; font-weight: bold;"></span></p>
-        <p style="margin: 5px 0; font-family: monospace; color: #8b949e;">System Filepath Trace: <span id="hud-full-path"></span></p>
-        <p style="margin: 5px 0; font-weight: bold; color: #f85149;">Aggregated Block Size: <span id="hud-size-gb"></span> GB</p>
+        <div class="gate-title">🪐 AUTONOMOUS PROJECT INTERACTION ENGINES ENGAGED</div>
+        <p style="font-size: 1.1em; margin: 5px 0;">Parsed Context Layer: <span id="hud-project-context" style="color: #f1e05a; font-weight: bold;"></span></p>
+        <p style="color: #8b949e; margin: 5px 0;">Vector Database Pathing State: <span id="hud-vector-status" style="color: #58a6ff;"></span></p>
         
         <div style="margin-top: 15px;">
-            <label style="color: #8b949e; font-family: monospace; display: block; margin-bottom: 5px;">🔑 Authorization Token Input:</label>
-            <input type="password" id="hud-security-key" value="SEC-OPERATOR-99X" style="background-color: #0d1117; border: 1px solid #30363d; color: white; padding: 8px; border-radius: 4px; font-family: monospace; width: 180px;">
+            <div style="font-weight: bold; margin-bottom: 8px; color: #bc8cff;">Suggested Automated Development Milestones:</div>
+            <div id="suggested-actions-list"></div>
         </div>
         
-        <div class="action-btn-group">
-            <button class="btn-action btn-danger" onclick="sendWebAction('1')">[1] AUTHORIZE DEPLOYMENT OFFLOAD</button>
-            <button class="btn-action btn-success" onclick="sendWebAction('2')">[2] SKIP & SAFEGUARD PATHWAY</button>
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button class="btn-action" onclick="sendWebAction('1')">✔ ACCEPT PIPELINE AND BUILD蓝图</button>
+            <button class="btn-action" onclick="sendWebAction('2')">❌ DEFER & PURGE STREAM DATA</button>
         </div>
     </div>
 
-    <div style="margin-bottom: 5px; font-family: monospace; font-size: 0.9em; color: #8b949e;">🎛️ EVENT HANDSHAKE LOGS:</div>
-    <div class="terminal-viewport" id="console-stream">
-        [SYSTEM INFO] Core interface frame initialized successfully.<br>
-        [SYSTEM INFO] Establishing automatic handshake sync loop to Python API on port 5000...<br>
+    <div style="background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+        <h3 style="color: #58a6ff; margin-top: 0;">📡 ICARUS INGESTION MONITOR FEED</h3>
+        <div class="triage-viewport" id="triage-feed">Awaiting synchronized data drop packet from Tampermonkey...</div>
     </div>
 
     <div class="velvet-prompt-portal">
-        <h3 style="color: #58a6ff; margin-top: 0; font-size: 1.1em;">🪐 VELVET PROMPT PORTAL // LOCAL INTELLIGENCE INJECTOR</h3>
-        <textarea id="prompt-payload" placeholder="Inject real-time client notes or consultation data structures straight down into the offline knowledge banks..."></textarea>
-        <div>
-            <button class="portal-btn" onclick="injectPromptContext()">INJECT DATA VECTOR</button>
-        </div>
+        <h3>🪐 VELVET PROMPT PORTAL // LOCAL INTELLIGENCE INJECTOR</h3>
+        <textarea id="prompt-payload" placeholder="Inject local project files or direct terminal snippets..."></textarea>
+        <button class="btn-action" onclick="injectPromptContext()">INJECT DATA VECTOR</button>
     </div>
-
 </div>
 
 <script>
-    const consoleConsole = document.getElementById('console-stream');
     const triageFeed = document.getElementById('triage-feed');
+    const actionsList = document.getElementById('suggested-actions-list');
 
-    function appendLog(message, type = "INFO") {
-        const time = new Date().toLocaleTimeString();
-        consoleConsole.innerHTML += `[${time}][${type}] ${message}<br>`;
-        consoleConsole.scrollTop = consoleConsole.scrollHeight;
-    }
-
-    // Dynamic Server Polling Interval Loop to keep HUD updated
     setInterval(async () => {
         try {
             let response = await fetch('http://127.0.0.1:5000/api/status');
             if (response.ok) {
                 let data = await response.json();
                 
-                // Update header metrics
                 document.getElementById('system-status-badge').innerText = "LIVE PORT 5000 SYNCED";
                 document.getElementById('system-status-badge').style.backgroundColor = "#238636";
                 document.getElementById('runtime-pid').innerText = data.bridge_pid;
                 
-                // Update live triage text area stream
+                // Render full data stream
                 if (data.latest_triage && triageFeed.textContent !== data.latest_triage) {
                     triageFeed.textContent = data.latest_triage;
-                    appendLog("Successfully synchronized fresh thread data chunk.", "RAG");
                 }
                 
-                // Track dynamic background script tasks
+                // Process dynamic automation questionnaire
                 let gateElement = document.getElementById('icarus-terminal-gate');
                 if (data.task_pending && data.task_pending.active) {
-                    document.getElementById('hud-folder-name').innerText = data.task_pending.folder_name;
-                    document.getElementById('hud-full-path').innerText = data.task_pending.full_path;
-                    document.getElementById('hud-size-gb').innerText = data.task_pending.size_gb.toFixed(2);
+                    document.getElementById('hud-project-context').innerText = data.task_pending.project_context;
+                    document.getElementById('hud-vector-status').innerText = data.task_pending.file_vector_status;
                     
-                    if (gateElement.style.display === 'none') {
-                        gateElement.style.display = 'block';
-                        appendLog(`Intercepted high-priority task block: ${data.task_pending.folder_name} (${data.task_pending.size_gb.toFixed(2)} GB)`, "WARN");
-                    }
+                    // Clear and render choices
+                    actionsList.innerHTML = "";
+                    data.task_pending.suggested_actions.forEach(action => {
+                        actionsList.innerHTML += `<div class="action-card">🤖 [AUTO-SUGGESTION] ${action}</div>`;
+                    });
+                    
+                    gateElement.style.display = 'block';
                 } else {
                     gateElement.style.display = 'none';
                 }
             }
-        } catch (error) {
-            document.getElementById('system-status-badge').innerText = "DISCONNECTED // SERVER STANDBY";
+        } catch (e) {
+            document.getElementById('system-status-badge').innerText = "OFFLINE // STANDBY";
             document.getElementById('system-status-badge').style.backgroundColor = "#da3633";
         }
     }, 2000);
 
-    // Communicate actions triggered by custom interface buttons back down to terminal loops
     async function sendWebAction(choiceCode) {
-        let keyToken = document.getElementById('hud-security-key').value;
         try {
-            let response = await fetch('http://127.0.0.1:5000/api/web_action', {
+            await fetch('http://127.0.0.1:5000/api/web_action', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ choice: choiceCode, security_key: keyToken })
+                body: JSON.stringify({ choice: choiceCode, security_key: "SEC-OPERATOR-99X" })
             });
-            let result = await response.json();
-            appendLog(`Web execution payload response state: ${result.message}`, "SYSTEM");
-        } catch(e) {
-            appendLog(`Failed to communicate web execution instructions back to server interface channel.`, "ERROR");
-        }
+        } catch(e) { console.error("HUD delivery failure", e); }
     }
 
     async function injectPromptContext() {
-        let payloadText = document.getElementById('prompt-payload').value;
-        if (!payloadText || payloadText.trim() === "") return;
-        
-        let keyToken = "SEC-OPERATOR-99X";
+        let text = document.getElementById('prompt-payload').value;
+        if (!text || text.trim() === "") return;
         try {
             let response = await fetch('http://127.0.0.1:5000/api/web_action', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ choice: "manual_inject", security_key: keyToken, payload: payloadText })
+                body: JSON.stringify({ choice: "manual_inject", security_key: "SEC-OPERATOR-99X", payload: text })
             });
-            if (response.ok) {
-                appendLog(`Manual context ingestion pass verified. Written to server arrays.`, "RAG");
-                document.getElementById('prompt-payload').value = "";
-            }
-        } catch(e) {
-            appendLog(`Manual ingestion pipeline rejected by API bridge.`, "ERROR");
-        }
+            if (response.ok) document.getElementById('prompt-payload').value = "";
+        } catch(e) { console.error(e); }
     }
 </script>
-
 </body>
 </html>
