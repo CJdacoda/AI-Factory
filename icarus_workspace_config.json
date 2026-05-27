@@ -1,0 +1,20 @@
+{
+  "workspace_root": "D:\\AI_Factory",
+  "bridge_host": "127.0.0.1",
+  "bridge_port": 5000,
+  "storage_offload_root": "D:\\AI_Factory\\storage_offload",
+  "game_offload_root": "D:\\AI_Factory\\game_offload",
+  "download_dumps": "D:\\AI_Factory\\download_dumps",
+  "scan_sources_on_c": [
+    "C:\\Users\\%USERNAME%\\Downloads",
+    "C:\\Users\\%USERNAME%\\Documents\\My Games",
+    "C:\\Users\\%USERNAME%\\AppData\\Local\\Temp"
+  ],
+  "duplicate_extensions": [".pak", ".zip", ".rar", ".7z", ".tmp", ".bak", ".log"],
+  "protected_paths": [
+    "D:\\AI_Factory\\venv",
+    "D:\\AI_Factory\\.git",
+    "D:\\AI_Factory\\cursor"
+  ],
+  "human_gate_key": "SEC-OPERATOR-99X"
+}

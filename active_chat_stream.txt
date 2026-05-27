@@ -1,0 +1,9 @@
+=== LIVE CHAT STREAM — Structural Notes ===
+[Paste or append live Cursor, ChatGPT, and Gemini thread fragments here for side-by-side comparison with knowledge_base.txt]
+
+
+=== [BROWSER_SYNC][2026-05-26 19:56:14][SOURCE: REVENANT_HUD] ===
+🎯 MASSIVE DIRECTORY ISOLATED: Google
+📁 Full Path : C:\Users\Caleb Parker\AppData\Local\Google
+📊 Total Folder Weight: 4.71 GB
+Contains: Chrome crash reports, Software Reporter Tool logs

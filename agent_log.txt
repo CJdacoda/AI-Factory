@@ -1,0 +1,10 @@
+[TOKEN-1000] System Initialization. Core RAG modules online.
+
+[TOKEN-1779245808] [TOKEN-1001] Initiating data ingestion for RAG module population.
+[TOKEN-1779293488] Agent Loop Error: litellm.ServiceUnavailableError: GeminiException - {
+  "error": {
+    "code": 503,
+    "message": "This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.",
+    "status": "UNAVAILABLE"
+  }
+}

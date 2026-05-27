@@ -1,0 +1,5 @@
+VALORANT CREATIONS WORKSPACE - TARGET THREAD
+===========================================
+PROJECT TYPE: Automated Gaming Asset Maker & Competitive Trainer
+PRIMARY MECHANIC TARGET: Micro individual performance optimizations (e.g., Yoru space control, entry-kill sequencing, utility economy).
+SANDBOX OBJECTIVES: Research tracker metrics, isolate individual improvement patterns, and auto-generate coaching profiles.

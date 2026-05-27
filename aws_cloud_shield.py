@@ -1,6 +1,6 @@
 import os
 import json
-from litellm import completion
+from llm_provider_config import gemini_flash_completion
 
 def generate_hardened_iam_policy(role_scope):
     """
@@ -18,11 +18,10 @@ def generate_hardened_iam_policy(role_scope):
     user_prompt = f"Generate a hardened, zero-trust IAM policy for this specific role/scope: {role_scope}"
 
     try:
-        response = completion(
-            model="gemini/gemini-2.5-flash",
+        response = gemini_flash_completion(
             messages=[
                 {"role": "system", "content": system_instruction},
-                {"role": "user", "content": user_prompt}
+                {"role": "user", "content": user_prompt},
             ]
         )
         return response.choices[0].message.content.strip()

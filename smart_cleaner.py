@@ -1,62 +1,60 @@
 import os
-from litellm import completion
+import time
+from rich.console import Console
+from rich.panel import Panel
+from rich.live import Live
+from rich.table import Table
 
-def scan_factory_directory():
-    """Scans the active directory to catalog files for RAG parsing."""
-    valid_extensions = ('.py', '.txt', '.yml', '.json')
-    catalog = []
-    
-    print("[Smart Cleaner] Inventorying current AI Factory workspace...")
-    for file in os.listdir('.'):
-        if file.endswith(valid_extensions) and os.path.isfile(file):
-            catalog.append(file)
-    return catalog
+console = Console()
 
-def run_intelligent_storage_optimizer():
-    """
-    Smart Cleaner Core - RAG Directory Alignment
-    Analyzes active project files to optimize workspace structure.
-    """
-    print("\n[Smart Cleaner] Activating directory intelligence matrix...")
+def run_realtime_radar_matrix():
+    console.print("[bold bright_black]=============================================[/bold bright_black]")
+    console.print(Panel("[bold green]📡 ICARUS DYNAMIC SYSTEM RADAR v3[/bold green]\nStreaming active workspace tracking arrays straight to console...", title="RADAR_LIVE"))
     
-    files_to_optimize = scan_factory_directory()
-    
-    # Compile a structural manifest of all active files to use as RAG context
-    workspace_manifest = ""
-    for file_name in files_to_optimize:
-        try:
-            with open(file_name, "r", encoding="utf-8") as f:
-                # Read the first few lines of each file to understand its purpose without wasting tokens
-                snippet = "".join(f.readlines()[:5])
-                workspace_manifest += f"\n--- FILE: {file_name} ---\n{snippet}\n"
-        except Exception:
-            workspace_manifest += f"\n--- FILE: {file_name} --- (Unable to parse raw data)\n"
+    all_files = [f for f in os.listdir('.') if os.path.isfile(f)]
+    marked_for_review = []
+    skipped_files = []
 
-    system_instruction = (
-        "You are an elite System Administrator and Storage Optimization Intelligence. Your job is to analyze "
-        "the active workspace file manifest, evaluate structural redundancies, and provide a perfectly organized "
-        "directory layout recommendation to keep the development workspace running at peak performance."
-    )
-    
-    user_prompt = (
-        f"Analyze this active local file manifest and provide a structural optimization map:\n{workspace_manifest}"
-    )
+    # Dynamic Visual Stream Panel
+    with Live(Panel("Initializing active sweep...", title="[cyan]LIVE REGISTRY SCAN[/cyan]"), refresh_per_second=10) as live:
+        for index, file in enumerate(all_files):
+            # This line forces the terminal to update dynamically so you see exactly what the bot is looking at
+            live.update(Panel(f"Parsing node path: [bold yellow]{file}[/bold yellow]\nProgress tracking: {index+1}/{len(all_files)} files processed.", title="[cyan]LIVE REGISTRY SCAN[/cyan]", border_style="yellow"))
+            time.sleep(0.15) # Smooth visible cadence for terminal views and streams
+            
+            if file.endswith(('.tmp', '.bak', '.old')) or file in ("test_log.txt", "desktop_cleaned_archive.zip"):
+                marked_for_review.append(file)
+            else:
+                skipped_files.append(file)
 
-    try:
-        response = completion(
-            model="gemini/gemini-2.5-flash",
-            messages=[
-                {"role": "system", "content": system_instruction},
-                {"role": "user", "content": user_prompt}
-            ]
-        )
-        return response.choices[0].message.content
-    except Exception as e:
-        return f"Optimizer Routing Error: {str(e)}"
+    # Output Container Presentation
+    summary_table = Table(title="🗄️ Automated Workspace Container Allocation")
+    summary_table.add_column("Status Matrix", justify="left", style="cyan")
+    summary_table.add_column("Tracked File Assets", style="white")
+    summary_table.add_column("Reasoning Layer", style="bright_black")
+    
+    for f in marked_for_review:
+        summary_table.add_row("🚩 REVIEW FOR PURGE", f, "Matches temporary workspace clutter signature.")
+    for f in skipped_files:
+        summary_table.add_row("🔒 SAFE / SKIPPED", f, "Core system script or protected data structure.")
+        
+    console.print(summary_table)
+
+    # Human-In-The-Loop Training Interface
+    if skipped_files:
+        console.print(f"\n[bold magenta]Icarus Learning Loop:[/bold magenta] Evaluate the safe containers above.")
+        console.print("👉 Did I skip an uncategorized file that you want marked for deletion? (y/n)")
+        choice = input("> ").strip().lower()
+        
+        if choice == 'y':
+            flagged_file = input("Enter the EXACT file name to inject into the training array: ").strip()
+            if flagged_file in skipped_files:
+                # Appends the rule directly back into your live RAG memory file
+                with open("active_chat_stream.txt", "a", encoding="utf-8") as f:
+                    f.write(f"\n[TRAINING_REINFORCEMENT] User manually flagged protected file '{flagged_file}' for future deletion cycles.")
+                console.print(f"[bold green]✔ Optimization rule successfully promoted to active_chat_stream.txt for next RAG pass.[/bold green]")
+            else:
+                console.print("[bold red]File not found in active directory pool.[/bold red]")
 
 if __name__ == "__main__":
-    print("=== SMART CLEANER LOGISTICS ENGINE ONLINE ===")
-    
-    optimization_map = run_intelligent_storage_optimizer()
-    print("\n[Icarus AI Factory - Recommended Storage Architecture Map]:")
-    print(optimization_map)
+    run_realtime_radar_matrix()

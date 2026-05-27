@@ -1,4 +1,6 @@
 venv/
+cursor/
+.git/
+*.pyc
 __pycache__/
-.env
-.cursor/
+game_offload/
