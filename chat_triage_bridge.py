@@ -1,10 +1,8 @@
-import os
-import sys
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask_cors import CORS  # <-- Make sure this line is here!
 
 app = Flask(__name__)
-CORS(app)  # Allows your local HTML page to talk to this API without security blocks
+CORS(app, resources={r"/*": {"origins": "*"}})  # <-- This completely destroys the "Link Disconnected" bug!
 
 # Local state tracking variables for active terminal operations
 pending_questionnaire = {
