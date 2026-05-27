@@ -1,8 +1,13 @@
+import os
 from flask import Flask, request, jsonify
-from flask_cors import CORS  # <-- Make sure this line is here!
+from flask_cors import CORS  
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})  # <-- This completely destroys the "Link Disconnected" bug!
+CORS(app, resources={r"/*": {"origins": "*"}})  
+
+# Create a local directory for captured data dumps if it doesn't exist
+DUMP_DIR = r"D:\AI_Factory\captured_intelligence"
+os.makedirs(DUMP_DIR, exist_ok=True)
 
 # Local state tracking variables for active terminal operations
 pending_questionnaire = {
@@ -38,18 +43,37 @@ def register_task_webhook():
 
 @app.route('/api/web_action', methods=['POST'])
 def web_action_receiver():
-    """Triggered when you click an animated button inside your HTML website layout."""
+    """Triggered when you click the 🪐 SYNC TO ICARUS button in your browser."""
     global pending_questionnaire
-    data = request.json
+    data = request.json or {}
     choice = data.get("choice")
     auth_key = data.get("security_key")
+    payload = data.get("payload", "")
     
     if auth_key != "SEC-OPERATOR-99X":
+        print("⚠️ UNAUTHORIZED PACKET DROPPED: Invalid Token")
         return jsonify({"status": "DENIED", "message": "Invalid Security Key Token"})
+        
+    # --- 🌌 DATA INTERCEPTION LAYER ---
+    if payload:
+        print(f"\n[📡 ICARUS INCOMING STACK] Intercepted payload payload block! ({len(payload)} chars)")
+        
+        # Save the captured conversation cleanly to a local file
+        filename = os.path.join(DUMP_DIR, "synced_intelligence_log.txt")
+        try:
+            with open(filename, "a", encoding="utf-8") as f:
+                f.write("\n\n=========================================\n")
+                f.write(f"🛰️ SYNCHRONIZED CAPTURE PASS\n")
+                f.write("=========================================\n")
+                f.write(payload)
+            print(f"💾 SUCCESSFULLY SERIALIZED: Appended to {filename}")
+        except Exception as e:
+            print(f"❌ LOG SERIALIZATION FAILURE: {str(e)}")
+    # ----------------------------------
         
     pending_questionnaire["user_choice"] = choice
     pending_questionnaire["active"] = False  # Clear the task block once resolved
-    return jsonify({"status": "AUTHORIZED", "message": f"Action {choice} queued for terminal deployment"})
+    return jsonify({"status": "AUTHORIZED", "message": f"Action {choice} queued and data serialized safely."})
 
 @app.route('/api/webhook_poll_choice', methods=['GET'])
 def poll_choice_webhook():
@@ -58,5 +82,8 @@ def poll_choice_webhook():
     return jsonify({"user_choice": pending_questionnaire["user_choice"]})
 
 if __name__ == '__main__':
+    print("\n" + "="*50)
     print("🛰️ ICARUS REAL-TIME WEBHOOK APPARATUS INITIALIZED")
+    print(f"📁 INTELLIGENCE REPOSITORY LOCATION: {DUMP_DIR}")
+    print("="*50 + "\n")
     app.run(host='127.0.0.1', port=5000, debug=False)
