@@ -31,7 +31,7 @@
         }
         .status-badge {
             display: inline-block;
-            background-color: #238636;
+            background-color: #da3633;
             color: white;
             padding: 4px 12px;
             border-radius: 12px;
@@ -48,9 +48,23 @@
             font-size: 0.9em;
             line-height: 1.5;
             color: #8b949e;
-            height: 300px;
+            height: 250px;
             overflow-y: auto;
             margin-bottom: 20px;
+        }
+        .triage-viewport {
+            background-color: #090c10;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 15px;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 0.85em;
+            color: #58a6ff;
+            height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            margin-bottom: 20px;
+            border-left: 3px solid #58a6ff;
         }
         .velvet-prompt-portal {
             background-color: #161b22;
@@ -87,7 +101,6 @@
             color: #0d1117;
             border-color: #58a6ff;
         }
-        /* Questionnaire Webhook Overlay Theme */
         #icarus-terminal-gate {
             background: linear-gradient(135deg, #210c0c 0%, #0d0404 100%);
             border: 2px solid #f85149;
@@ -130,14 +143,19 @@
 
     <div class="header-panel">
         <h1>ICARUS FACTORY OPERATION MATRIX // MAIN COMMAND HUD</h1>
-        <div>SYSTEM STATUS: <span id="system-status-badge" class="status-badge">CONNECTED // OFFLINE LOGS</span></div>
+        <div>SYSTEM STATUS: <span id="system-status-badge" class="status-badge">DISCONNECTED // SERVER STANDBY</span></div>
         <div style="margin-top: 5px; font-size: 0.85em; color: #8b949e; font-family: monospace;">CORE APPARATUS ENGINE BACKEND PID: <span id="runtime-pid">--</span></div>
+    </div>
+
+    <div style="background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; margin-bottom: 20px;">
+        <h3 style="color: #58a6ff; margin-top: 0; font-size: 1.1em; font-family: monospace;">📡 ICARUS LIVE INTELLIGENCE FEED</h3>
+        <div class="triage-viewport" id="triage-feed">Awaiting synchronized data drop packet from Tampermonkey...</div>
     </div>
 
     <div id="icarus-terminal-gate" style="display: none;">
         <div class="gate-title">☠️ INTERRUPT SIGNAL // OPERATING SYSTEM OPTIMIZATION PROTOCOL</div>
         <p style="margin: 5px 0; font-size: 1.15em;">Isolated Directory Weight Target: <span id="hud-folder-name" style="color: #f1e05a; font-weight: bold;"></span></p>
-        <p style="margin: 5px 0; font-size: 0.9em; font-family: monospace; color: #8b949e;">System Filepath Trace: <span id="hud-full-path"></span></p>
+        <p style="margin: 5px 0; font-family: monospace; color: #8b949e;">System Filepath Trace: <span id="hud-full-path"></span></p>
         <p style="margin: 5px 0; font-weight: bold; color: #f85149;">Aggregated Block Size: <span id="hud-size-gb"></span> GB</p>
         
         <div style="margin-top: 15px;">
@@ -151,6 +169,7 @@
         </div>
     </div>
 
+    <div style="margin-bottom: 5px; font-family: monospace; font-size: 0.9em; color: #8b949e;">🎛️ EVENT HANDSHAKE LOGS:</div>
     <div class="terminal-viewport" id="console-stream">
         [SYSTEM INFO] Core interface frame initialized successfully.<br>
         [SYSTEM INFO] Establishing automatic handshake sync loop to Python API on port 5000...<br>
@@ -168,6 +187,7 @@
 
 <script>
     const consoleConsole = document.getElementById('console-stream');
+    const triageFeed = document.getElementById('triage-feed');
 
     function appendLog(message, type = "INFO") {
         const time = new Date().toLocaleTimeString();
@@ -175,7 +195,7 @@
         consoleConsole.scrollTop = consoleConsole.scrollHeight;
     }
 
-    // Dynamic Server Polling Interval Loop Loop to keep HUD updated
+    // Dynamic Server Polling Interval Loop to keep HUD updated
     setInterval(async () => {
         try {
             let response = await fetch('http://127.0.0.1:5000/api/status');
@@ -186,6 +206,12 @@
                 document.getElementById('system-status-badge').innerText = "LIVE PORT 5000 SYNCED";
                 document.getElementById('system-status-badge').style.backgroundColor = "#238636";
                 document.getElementById('runtime-pid').innerText = data.bridge_pid;
+                
+                // Update live triage text area stream
+                if (data.latest_triage && triageFeed.textContent !== data.latest_triage) {
+                    triageFeed.textContent = data.latest_triage;
+                    appendLog("Successfully synchronized fresh thread data chunk.", "RAG");
+                }
                 
                 // Track dynamic background script tasks
                 let gateElement = document.getElementById('icarus-terminal-gate');
@@ -224,11 +250,24 @@
         }
     }
 
-    function injectPromptContext() {
+    async function injectPromptContext() {
         let payloadText = document.getElementById('prompt-payload').value;
-        if (!payloadText.strip || payloadText.trim() === "") return;
-        appendLog(`Context ingestion sequence triggered successfully. Saved to database.`, "RAG");
-        document.getElementById('prompt-payload').value = "";
+        if (!payloadText || payloadText.trim() === "") return;
+        
+        let keyToken = "SEC-OPERATOR-99X";
+        try {
+            let response = await fetch('http://127.0.0.1:5000/api/web_action', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ choice: "manual_inject", security_key: keyToken, payload: payloadText })
+            });
+            if (response.ok) {
+                appendLog(`Manual context ingestion pass verified. Written to server arrays.`, "RAG");
+                document.getElementById('prompt-payload').value = "";
+            }
+        } catch(e) {
+            appendLog(`Manual ingestion pipeline rejected by API bridge.`, "ERROR");
+        }
     }
 </script>
 

@@ -1,0 +1,63 @@
+import os
+from flask import Flask, request, jsonify
+from flask_cors import CORS  
+
+app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": "*"}})  
+
+DUMP_DIR = r"D:\AI_Factory\captured_intelligence"
+os.makedirs(DUMP_DIR, exist_ok=True)
+
+# Shared memory for layout rendering
+latest_triage_payload = "No active capture payload in buffer."
+pending_questionnaire = {
+    "active": False,
+    "folder_name": "",
+    "full_path": "",
+    "size_gb": 0.0,
+    "user_choice": None
+}
+
+@app.route('/api/status', methods=['GET'])
+def get_system_status():
+    """Dashboard calls this on a loop to check tasks AND grab the latest chat stream."""
+    global latest_triage_payload
+    return jsonify({
+        "status": "ONLINE",
+        "bridge_pid": os.getpid(),
+        "task_pending": pending_questionnaire,
+        "latest_triage": latest_triage_payload
+    })
+
+@app.route('/api/web_action', methods=['POST'])
+def web_action_receiver():
+    """Triggered when you click the 🪐 SYNC TO ICARUS button in your browser."""
+    global pending_questionnaire, latest_triage_payload
+    data = request.json or {}
+    choice = data.get("choice")
+    auth_key = data.get("security_key")
+    payload = data.get("payload", "")
+    
+    if auth_key != "SEC-OPERATOR-99X":
+        return jsonify({"status": "DENIED", "message": "Invalid Security Key Token"})
+        
+    if payload:
+        print(f"\n[📡 ICARUS INCOMING STACK] Captured sync pass! ({len(payload)} chars)")
+        
+        # Store in memory short-term so the dashboard can fetch it
+        latest_triage_payload = payload[:1500] + "...\n[Truncated for Display]" if len(payload) > 1500 else payload
+        
+        # Write the full file to your local disk
+        filename = os.path.join(DUMP_DIR, "synced_intelligence_log.txt")
+        try:
+            with open(filename, "a", encoding="utf-8") as f:
+                f.write(f"\n\n=== CAPTURE PASS ===\n{payload}")
+        except Exception as e:
+            print(f"❌ File write error: {str(e)}")
+        
+    pending_questionnaire["user_choice"] = choice
+    pending_questionnaire["active"] = False  
+    return jsonify({"status": "AUTHORIZED", "message": "Data serialized safely."})
+
+if __name__ == '__main__':
+    app.run(host='127.0.0.1', port=5000, debug=False)
