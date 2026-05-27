@@ -12,7 +12,7 @@ os.makedirs(DUMP_DIR, exist_ok=True)
 
 # 📡 DISCORD MOBILE TRIAGE CONFIGURATION
 # Paste your unique Discord Webhook URL between the quotes below:
-DISCORD_WEBHOOK_URL = "PASTE_YOUR_COPIED_DISCORD_WEBHOOK_URL_HERE"
+DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1509054015030431744/YOY3rO2xA2VjRB6cQTHFl0xZI5mEIh6FQGMqj1WxJ6zcENIcaearHWpMx2arjCVLOWBd"
 
 # Central Memory Matrices
 latest_triage_payload = "Awaiting synchronized automated data stream..."
